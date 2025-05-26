@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CheckCircle, Target, List, Lightbulb, Code2, Zap } from 'lucide-react';
 
@@ -94,11 +93,13 @@ export const LessonPanel = ({ lesson, lessonCompleted, showHint, onToggleHint }:
               <List className="mr-2" size={20} />
               Step-by-Step Instructions
             </h3>
-            <ol className="list-decimal list-inside space-y-2 text-slate-300">
-              {lesson.steps.map((step: string, index: number) => (
-                <li key={index} className="leading-relaxed">{step}</li>
-              ))}
-            </ol>
+            <div className="bg-slate-800 rounded-lg p-4 border border-slate-600">
+              <ol className="list-decimal list-inside space-y-3 text-slate-100">
+                {lesson.steps.map((step: string, index: number) => (
+                  <li key={index} className="leading-relaxed text-white font-medium">{step}</li>
+                ))}
+              </ol>
+            </div>
           </div>
         )}
         
