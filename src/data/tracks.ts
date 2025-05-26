@@ -1,4 +1,3 @@
-
 export const tracks = [
   {
     id: 'python-basics',
@@ -10,43 +9,120 @@ export const tracks = [
     lessons: [
       {
         title: 'Hello, Python!',
-        explanation: 'Let\'s start with the classic first program. Use the print() function to display text.',
-        startCode: '# Write your first Python program\n',
+        explanation: 'Welcome to Python programming! In this lesson, you\'ll write your very first Python program using the print() function. This is the traditional starting point for every programmer - saying "Hello, World!" to the computer. The print() function is one of the most useful tools in Python for displaying information to users.',
+        objectives: [
+          'Use the print() function to display text',
+          'Understand how to write strings in Python',
+          'Run your first Python program successfully'
+        ],
+        startCode: '# Write your first Python program\n# TODO: Use print() to say hello to the world',
+        steps: [
+          'Type "print(" to start the print function',
+          'Add quotes around your message: "Hello, World!"',
+          'Close the parentheses: print("Hello, World!")',
+          'Run the code to see your message appear'
+        ],
         goal: 'print("Hello, World!")',
         expectedOutput: 'Hello, World!',
-        hint: 'Use print() with your message inside quotes: print("Hello, World!")'
+        hint: 'Use print() with your message inside quotes: print("Hello, World!")',
+        microChallenges: [
+          'Try printing your own name instead of "World"',
+          'Print multiple messages using multiple print() statements'
+        ]
       },
       {
-        title: 'Variables and Math',
-        explanation: 'Store values in variables and perform calculations. Variables are like containers for data.',
-        startCode: '# Create variables and do math\nname = "Coder"\nage = 25\n',
-        goal: 'print(f"I am {name} and I am {age} years old")',
+        title: 'Variables - Storing Information',
+        explanation: 'Variables are like labeled containers that store information in your program. Think of them as boxes with names on them - you can put data inside and refer to it later by name. This lesson teaches you how to create variables and use them to store different types of data like text and numbers.',
+        objectives: [
+          'Create variables to store text and numbers',
+          'Use f-strings to combine variables with text',
+          'Display variable contents using print()'
+        ],
+        startCode: '# Create variables to store information\nname = "Coder"\nage = 25\n# TODO: Print a message using both variables',
+        steps: [
+          'Look at the existing variables: name stores text, age stores a number',
+          'Use an f-string to combine text and variables: f"I am {name}"',
+          'Include both variables in your message',
+          'Use print() to display the complete message'
+        ],
+        goal: 'name = "Coder"\nage = 25\nprint(f"I am {name} and I am {age} years old")',
         expectedOutput: 'I am Coder and I am 25 years old',
-        hint: 'Use f-strings to combine text and variables: f"I am {name} and I am {age} years old"'
+        hint: 'Use f-strings to combine text and variables: f"I am {name} and I am {age} years old"',
+        microChallenges: [
+          'Create a variable for your favorite color and include it in the message',
+          'Try using different names and ages'
+        ]
       },
       {
-        title: 'User Input',
-        explanation: 'Get information from users with input(). Make your programs interactive!',
-        startCode: '# Get user input\n',
-        goal: 'name = input("What is your name? ")\nprint(f"Hello, {name}!")',
-        expectedOutput: 'What is your name? \nHello, [name]!',
-        hint: 'Use input() to get text from the user, then use it in a print statement'
+        title: 'Getting User Input',
+        explanation: 'Interactive programs are much more engaging! The input() function allows your program to ask questions and receive answers from users. This makes your programs dynamic and personalized. You\'ll learn how to prompt users for information and then use their responses in your program.',
+        objectives: [
+          'Use input() to get information from users',
+          'Store user input in variables',
+          'Create personalized responses using user data'
+        ],
+        startCode: '# Get information from the user\n# TODO: Ask for the user\'s name and greet them personally',
+        steps: [
+          'Use input() with a question: input("What is your name? ")',
+          'Store the result in a variable: name = input("What is your name? ")',
+          'Use the variable in a personalized greeting',
+          'Print the greeting using f-strings'
+        ],
+        goal: 'name = input("What is your name? ")\nprint(f"Hello, {name}! Nice to meet you!")',
+        expectedOutput: 'What is your name? \nHello, [user_input]! Nice to meet you!',
+        hint: 'Use input() to get text from the user, then use it in a print statement with f-strings',
+        microChallenges: [
+          'Ask for both name and favorite hobby, then create a longer message',
+          'Ask for a number and do simple math with it'
+        ]
       },
       {
-        title: 'Making Decisions',
-        explanation: 'Use if statements to make your code smart. Let your program decide what to do based on conditions.',
-        startCode: '# Make decisions with if statements\nscore = 85\n',
-        goal: 'if score >= 90:\n    print("A grade")\nelse:\n    print("Keep studying!")',
-        expectedOutput: 'Keep studying!',
-        hint: 'Use if score >= 90: followed by print() statements. Don\'t forget the indentation!'
+        title: 'Making Decisions with If Statements',
+        explanation: 'Programs need to make decisions based on different conditions. If statements allow your code to choose different paths depending on the data it receives. This is like giving your program a brain - it can analyze information and respond appropriately. You\'ll learn to use comparison operators and create branching logic.',
+        objectives: [
+          'Use if statements to make decisions in code',
+          'Compare values using comparison operators (>=, <, ==)',
+          'Create different responses based on conditions'
+        ],
+        startCode: '# Make decisions based on a test score\nscore = 85\n# TODO: Check if the score is 90 or above for an A grade',
+        steps: [
+          'Start with "if" followed by a condition: if score >= 90:',
+          'Add a colon (:) after the condition',
+          'Indent the next line and add what happens if true',
+          'Add "else:" for what happens if false',
+          'Indent the else block too'
+        ],
+        goal: 'score = 85\nif score >= 90:\n    print("A grade - Excellent work!")\nelse:\n    print("Keep studying to reach that A!")',
+        expectedOutput: 'Keep studying to reach that A!',
+        hint: 'Use if score >= 90: followed by indented print() statements. Don\'t forget the colons and indentation!',
+        microChallenges: [
+          'Add elif conditions for B grade (80-89) and C grade (70-79)',
+          'Try different score values to test all conditions'
+        ]
       },
       {
-        title: 'Loops for Repetition',
-        explanation: 'Repeat actions efficiently with loops. Why write the same code multiple times?',
-        startCode: '# Use a loop to count\n',
+        title: 'Loops - Repeating Actions Efficiently',
+        explanation: 'Why write the same code multiple times when you can use loops? Loops allow you to repeat actions efficiently, whether it\'s counting numbers, processing items in a list, or performing calculations. The for loop is perfect for when you know how many times you want to repeat something.',
+        objectives: [
+          'Use for loops to repeat actions multiple times',
+          'Understand the range() function for counting',
+          'Combine loops with f-strings for dynamic output'
+        ],
+        startCode: '# Use a loop to count from 0 to 4\n# TODO: Print "Count: X" for each number',
+        steps: [
+          'Start with "for" followed by a variable name: for i in',
+          'Use range(5) to count from 0 to 4: for i in range(5):',
+          'Add a colon (:) after the range',
+          'Indent the next line and print the count',
+          'Use f-strings to include the number: f"Count: {i}"'
+        ],
         goal: 'for i in range(5):\n    print(f"Count: {i}")',
         expectedOutput: 'Count: 0\nCount: 1\nCount: 2\nCount: 3\nCount: 4',
-        hint: 'Use "for i in range(5):" to loop 5 times, then print(f"Count: {i}")'
+        hint: 'Use "for i in range(5):" to loop 5 times, then print(f"Count: {i}")',
+        microChallenges: [
+          'Change the range to count from 1 to 10',
+          'Try counting backwards using range(5, 0, -1)'
+        ]
       },
       {
         title: 'Working with Lists',
@@ -99,20 +175,50 @@ export const tracks = [
     skills: ['DOM Manipulation', 'Events', 'Functions', 'Async/Await', 'APIs', 'ES6+'],
     lessons: [
       {
-        title: 'JavaScript Basics',
-        explanation: 'Start with JavaScript fundamentals. Variables, functions, and basic syntax.',
-        startCode: '// Your first JavaScript program\n',
-        goal: 'console.log("Hello, JavaScript!")',
+        title: 'JavaScript Basics - Your First Program',
+        explanation: 'JavaScript is the programming language that powers the web! Every interactive website you\'ve ever used relies on JavaScript. In this lesson, you\'ll write your first JavaScript program using console.log() to display messages. Think of console.log() as JavaScript\'s way of talking to you - it\'s essential for debugging and understanding what your code is doing.',
+        objectives: [
+          'Use console.log() to display messages',
+          'Understand JavaScript syntax and semicolons',
+          'Run JavaScript code and see output in the console'
+        ],
+        startCode: '// Your first JavaScript program\n// TODO: Use console.log to say hello',
+        steps: [
+          'Type "console.log(" to start the function',
+          'Add quotes around your message: "Hello, JavaScript!"',
+          'Close with parentheses and semicolon: console.log("Hello, JavaScript!");',
+          'Run the code to see your message in the console'
+        ],
+        goal: 'console.log("Hello, JavaScript!");',
         expectedOutput: 'Hello, JavaScript!',
-        hint: 'Use console.log() to display text: console.log("Hello, JavaScript!")'
+        hint: 'Use console.log() to display text: console.log("Hello, JavaScript!");',
+        microChallenges: [
+          'Try logging different messages',
+          'Log multiple messages with separate console.log() statements'
+        ]
       },
       {
-        title: 'Variables and Data Types',
-        explanation: 'Learn about different data types: strings, numbers, booleans, and arrays.',
-        startCode: '// Declare variables\nlet name = "Developer";\nlet age = 25;\nlet isLearning = true;\n',
-        goal: 'console.log(`Name: ${name}, Age: ${age}, Learning: ${isLearning}`)',
+        title: 'Variables and Template Literals',
+        explanation: 'JavaScript variables are containers for storing data values. Unlike some languages, JavaScript is flexible about data types - the same variable can hold text, numbers, or boolean values. Template literals (using backticks) are a modern way to create strings that include variables, making your code cleaner and more readable.',
+        objectives: [
+          'Declare variables using let and const',
+          'Store different types of data (strings, numbers, booleans)',
+          'Use template literals with ${} to include variables in strings'
+        ],
+        startCode: '// Declare variables for personal information\nlet name = "Developer";\nlet age = 25;\nlet isLearning = true;\n// TODO: Create a message using template literals',
+        steps: [
+          'Use backticks (`) instead of quotes for template literals',
+          'Include variables using ${variableName} syntax',
+          'Combine all three variables in a descriptive message',
+          'Use console.log() to display the result'
+        ],
+        goal: 'let name = "Developer";\nlet age = 25;\nlet isLearning = true;\nconsole.log(`Name: ${name}, Age: ${age}, Learning: ${isLearning}`);',
         expectedOutput: 'Name: Developer, Age: 25, Learning: true',
-        hint: 'Use template literals with backticks and ${} for variable interpolation'
+        hint: 'Use template literals with backticks and ${} for variable interpolation: `Name: ${name}`',
+        microChallenges: [
+          'Add more variables like favorite programming language',
+          'Try changing the variable values and see how the output changes'
+        ]
       },
       {
         title: 'Functions and Parameters',

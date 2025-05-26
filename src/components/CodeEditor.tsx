@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
-import { Play, RotateCcw, ChevronLeft, ChevronRight, Lightbulb, CheckCircle } from 'lucide-react';
+import { Play, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LessonPanel } from './LessonPanel';
 
 export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonChange, userProgress }) => {
   const [code, setCode] = useState('');
@@ -83,32 +83,17 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
 
   return (
     <div className="flex flex-col h-screen">
-      {/* Lesson Header */}
-      <div className="bg-black/20 backdrop-blur-sm border-b border-white/10 p-4">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center space-x-4">
-              <h2 className="text-2xl font-bold text-white">{lesson.title}</h2>
-              {lessonCompleted && (
-                <CheckCircle className="text-green-400" size={24} />
-              )}
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <span className="text-slate-400">
-                {currentLesson + 1} / {track.lessons.length}
-              </span>
-              <div className="w-32 bg-slate-700 rounded-full h-2">
-                <div
-                  className="bg-gradient-to-r from-cyan-400 to-purple-400 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${((currentLesson + 1) / track.lessons.length) * 100}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
-          
-          <p className="text-slate-300 mb-4">{lesson.explanation}</p>
-          
+      {/* Enhanced Lesson Header */}
+      <LessonPanel 
+        lesson={lesson}
+        lessonCompleted={lessonCompleted}
+        showHint={showHint}
+        onToggleHint={() => setShowHint(!showHint)}
+      />
+
+      {/* Progress and Navigation Bar */}
+      <div className="bg-slate-800 px-4 py-3 border-b border-slate-600">
+        <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button
               onClick={prevLesson}
@@ -117,14 +102,6 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
             >
               <ChevronLeft size={16} />
               <span>Previous</span>
-            </button>
-            
-            <button
-              onClick={() => setShowHint(!showHint)}
-              className="flex items-center space-x-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500 transition-colors"
-            >
-              <Lightbulb size={16} />
-              <span>Hint</span>
             </button>
             
             <button
@@ -137,11 +114,17 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
             </button>
           </div>
           
-          {showHint && (
-            <div className="mt-4 p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
-              <p className="text-yellow-200">{lesson.hint}</p>
+          <div className="flex items-center space-x-4">
+            <span className="text-slate-400">
+              {currentLesson + 1} / {track.lessons.length}
+            </span>
+            <div className="w-32 bg-slate-700 rounded-full h-2">
+              <div
+                className="bg-gradient-to-r from-cyan-400 to-purple-400 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${((currentLesson + 1) / track.lessons.length) * 100}%` }}
+              ></div>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
