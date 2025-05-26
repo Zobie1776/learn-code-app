@@ -15,6 +15,16 @@ export const tracks = [
           'Understand how to write strings in Python',
           'Run your first Python program successfully'
         ],
+        syntaxIntro: {
+          concept: 'print() function',
+          syntax: 'print("your message here")',
+          minimalExample: 'print("Hello, World!")',
+          breakdown: [
+            'print() - This is the function that displays text',
+            '"Hello, World!" - This is a string (text) inside quotes',
+            'The parentheses () contain what you want to display'
+          ]
+        },
         startCode: '# Write your first Python program\n# TODO: Use print() to say hello to the world',
         steps: [
           'Type "print(" to start the print function',
@@ -38,7 +48,18 @@ export const tracks = [
           'Use f-strings to combine variables with text',
           'Display variable contents using print()'
         ],
-        startCode: '# Create variables to store information\nname = "Coder"\nage = 25\n# TODO: Print a message using both variables',
+        syntaxIntro: {
+          concept: 'f-strings (formatted string literals)',
+          syntax: 'f"text {variable} more text"',
+          minimalExample: 'name = "Alice"\nprint(f"Hello, {name}!")',
+          breakdown: [
+            'name = "Alice" - Creates a variable called name and stores "Alice"',
+            'f"Hello, {name}!" - The f before quotes makes it an f-string',
+            '{name} - Curly braces insert the variable value into the text'
+          ],
+          analogy: 'Think of f-strings like filling in blanks on a form - you write the template and Python fills in the blanks with your variables!'
+        },
+        startCode: '# Create variables to store information\nname = "Coder"\nage = 25\n# TODO: Print a message using both variables with f-strings',
         steps: [
           'Look at the existing variables: name stores text, age stores a number',
           'Use an f-string to combine text and variables: f"I am {name}"',
@@ -47,7 +68,8 @@ export const tracks = [
         ],
         goal: 'name = "Coder"\nage = 25\nprint(f"I am {name} and I am {age} years old")',
         expectedOutput: 'I am Coder and I am 25 years old',
-        hint: 'Use f-strings to combine text and variables: f"I am {name} and I am {age} years old"',
+        hint: 'Remember: Always put f before the quotes, and use {variable} inside the quotes',
+        syntaxReminder: 'f-string syntax: f"text {variable} more text"',
         microChallenges: [
           'Create a variable for your favorite color and include it in the message',
           'Try using different names and ages'
@@ -61,19 +83,30 @@ export const tracks = [
           'Store user input in variables',
           'Create personalized responses using user data'
         ],
+        syntaxIntro: {
+          concept: 'input() function',
+          syntax: 'variable = input("Question to ask user: ")',
+          minimalExample: 'name = input("What is your name? ")\nprint(f"Hello, {name}!")',
+          breakdown: [
+            'input("What is your name? ") - Shows the question and waits for user input',
+            'name = - Stores whatever the user types into the name variable',
+            'The text in quotes is the prompt the user will see'
+          ]
+        },
         startCode: '# Get information from the user\n# TODO: Ask for the user\'s name and greet them personally',
         steps: [
           'Use input() with a question: input("What is your name? ")',
           'Store the result in a variable: name = input("What is your name? ")',
-          'Use the variable in a personalized greeting',
-          'Print the greeting using f-strings'
+          'Use the variable in a personalized greeting with f-strings',
+          'Print the greeting using print()'
         ],
         goal: 'name = input("What is your name? ")\nprint(f"Hello, {name}! Nice to meet you!")',
         expectedOutput: 'What is your name? \nHello, [user_input]! Nice to meet you!',
         hint: 'Use input() to get text from the user, then use it in a print statement with f-strings',
+        syntaxReminder: 'input() always returns text, even if the user types numbers',
         microChallenges: [
           'Ask for both name and favorite hobby, then create a longer message',
-          'Ask for a number and do simple math with it'
+          'Ask for a number and do simple math with it (hint: use int() to convert)'
         ]
       },
       {
@@ -84,6 +117,18 @@ export const tracks = [
           'Compare values using comparison operators (>=, <, ==)',
           'Create different responses based on conditions'
         ],
+        syntaxIntro: {
+          concept: 'if/else statements',
+          syntax: 'if condition:\n    # code to run if true\nelse:\n    # code to run if false',
+          minimalExample: 'age = 18\nif age >= 18:\n    print("Adult")\nelse:\n    print("Minor")',
+          breakdown: [
+            'if age >= 18: - Checks if age is 18 or greater',
+            'The colon (:) is required after the condition',
+            'Indented code runs only if the condition is True',
+            'else: provides an alternative if the condition is False'
+          ],
+          analogy: 'Think of if statements like a fork in the road - your program chooses which path to take based on the condition!'
+        },
         startCode: '# Make decisions based on a test score\nscore = 85\n# TODO: Check if the score is 90 or above for an A grade',
         steps: [
           'Start with "if" followed by a condition: if score >= 90:',
@@ -95,6 +140,7 @@ export const tracks = [
         goal: 'score = 85\nif score >= 90:\n    print("A grade - Excellent work!")\nelse:\n    print("Keep studying to reach that A!")',
         expectedOutput: 'Keep studying to reach that A!',
         hint: 'Use if score >= 90: followed by indented print() statements. Don\'t forget the colons and indentation!',
+        syntaxReminder: 'Python uses indentation (4 spaces) to group code blocks. Always use colons after if/else.',
         microChallenges: [
           'Add elif conditions for B grade (80-89) and C grade (70-79)',
           'Try different score values to test all conditions'
@@ -108,6 +154,18 @@ export const tracks = [
           'Understand the range() function for counting',
           'Combine loops with f-strings for dynamic output'
         ],
+        syntaxIntro: {
+          concept: 'for loops with range()',
+          syntax: 'for variable in range(number):\n    # code to repeat',
+          minimalExample: 'for i in range(3):\n    print(f"Count: {i}")',
+          breakdown: [
+            'for i in range(3): - Creates a loop that runs 3 times',
+            'i is a variable that changes each time (0, 1, 2)',
+            'range(3) creates numbers from 0 to 2 (not including 3)',
+            'The indented code runs once for each number'
+          ],
+          analogy: 'Think of a for loop like a stamping machine - it does the same action repeatedly, but with different values each time!'
+        },
         startCode: '# Use a loop to count from 0 to 4\n# TODO: Print "Count: X" for each number',
         steps: [
           'Start with "for" followed by a variable name: for i in',
@@ -119,8 +177,9 @@ export const tracks = [
         goal: 'for i in range(5):\n    print(f"Count: {i}")',
         expectedOutput: 'Count: 0\nCount: 1\nCount: 2\nCount: 3\nCount: 4',
         hint: 'Use "for i in range(5):" to loop 5 times, then print(f"Count: {i}")',
+        syntaxReminder: 'range(5) gives you 0, 1, 2, 3, 4 - it starts at 0 and stops before 5',
         microChallenges: [
-          'Change the range to count from 1 to 10',
+          'Change the range to count from 1 to 10 using range(1, 11)',
           'Try counting backwards using range(5, 0, -1)'
         ]
       },
@@ -182,6 +241,16 @@ export const tracks = [
           'Understand JavaScript syntax and semicolons',
           'Run JavaScript code and see output in the console'
         ],
+        syntaxIntro: {
+          concept: 'console.log() function',
+          syntax: 'console.log("your message");',
+          minimalExample: 'console.log("Hello, JavaScript!");',
+          breakdown: [
+            'console.log() - JavaScript function for displaying output',
+            '"Hello, JavaScript!" - A string (text) in quotes',
+            '; - Semicolon marks the end of a statement (optional but recommended)'
+          ]
+        },
         startCode: '// Your first JavaScript program\n// TODO: Use console.log to say hello',
         steps: [
           'Type "console.log(" to start the function',
@@ -192,6 +261,7 @@ export const tracks = [
         goal: 'console.log("Hello, JavaScript!");',
         expectedOutput: 'Hello, JavaScript!',
         hint: 'Use console.log() to display text: console.log("Hello, JavaScript!");',
+        syntaxReminder: 'JavaScript statements often end with semicolons (;)',
         microChallenges: [
           'Try logging different messages',
           'Log multiple messages with separate console.log() statements'
@@ -205,6 +275,17 @@ export const tracks = [
           'Store different types of data (strings, numbers, booleans)',
           'Use template literals with ${} to include variables in strings'
         ],
+        syntaxIntro: {
+          concept: 'Template literals with ${} syntax',
+          syntax: '`text ${variable} more text`',
+          minimalExample: 'let name = "Alex";\nconsole.log(`Hello, ${name}!`);',
+          breakdown: [
+            'let name = "Alex"; - Creates a variable using let keyword',
+            '`Hello, ${name}!` - Backticks (`) create a template literal',
+            '${name} - Dollar sign and braces insert the variable value'
+          ],
+          analogy: 'Template literals are like Mad Libs - you create a template and JavaScript fills in the blanks with your variables!'
+        },
         startCode: '// Declare variables for personal information\nlet name = "Developer";\nlet age = 25;\nlet isLearning = true;\n// TODO: Create a message using template literals',
         steps: [
           'Use backticks (`) instead of quotes for template literals',
@@ -215,6 +296,7 @@ export const tracks = [
         goal: 'let name = "Developer";\nlet age = 25;\nlet isLearning = true;\nconsole.log(`Name: ${name}, Age: ${age}, Learning: ${isLearning}`);',
         expectedOutput: 'Name: Developer, Age: 25, Learning: true',
         hint: 'Use template literals with backticks and ${} for variable interpolation: `Name: ${name}`',
+        syntaxReminder: 'Template literals use backticks (`), not regular quotes. Variables go inside ${}',
         microChallenges: [
           'Add more variables like favorite programming language',
           'Try changing the variable values and see how the output changes'

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CheckCircle, Target, List, Lightbulb } from 'lucide-react';
+import { CheckCircle, Target, List, Lightbulb, Code2, Zap } from 'lucide-react';
 
 interface LessonPanelProps {
   lesson: any;
@@ -40,6 +40,54 @@ export const LessonPanel = ({ lesson, lessonCompleted, showHint, onToggleHint }:
           </div>
         )}
 
+        {lesson.syntaxIntro && (
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-white mb-3 flex items-center">
+              <Code2 className="mr-2" size={20} />
+              New Concept: {lesson.syntaxIntro.concept}
+            </h3>
+            
+            <div className="bg-slate-800/50 rounded-lg p-4 mb-4">
+              <h4 className="text-cyan-300 font-semibold mb-2">Syntax:</h4>
+              <code className="text-green-400 bg-slate-900 px-2 py-1 rounded font-mono text-sm">
+                {lesson.syntaxIntro.syntax}
+              </code>
+            </div>
+
+            <div className="bg-slate-800/50 rounded-lg p-4 mb-4">
+              <h4 className="text-cyan-300 font-semibold mb-2">Minimal Example:</h4>
+              <pre className="text-green-400 bg-slate-900 p-3 rounded font-mono text-sm overflow-x-auto">
+                {lesson.syntaxIntro.minimalExample}
+              </pre>
+            </div>
+
+            <div className="bg-slate-800/50 rounded-lg p-4 mb-4">
+              <h4 className="text-cyan-300 font-semibold mb-2">Step-by-Step Breakdown:</h4>
+              <ul className="space-y-2">
+                {lesson.syntaxIntro.breakdown.map((step: string, index: number) => (
+                  <li key={index} className="text-slate-300 flex items-start">
+                    <span className="text-cyan-400 mr-2">•</span>
+                    <code className="text-yellow-300 mr-2">
+                      {step.split(' → ')[0]}
+                    </code>
+                    <span>→ {step.split(' → ')[1] || step}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {lesson.syntaxIntro.analogy && (
+              <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 mb-4">
+                <h4 className="text-blue-200 font-semibold mb-2 flex items-center">
+                  <Zap className="mr-2" size={16} />
+                  Think of it this way:
+                </h4>
+                <p className="text-blue-200 italic">{lesson.syntaxIntro.analogy}</p>
+              </div>
+            )}
+          </div>
+        )}
+
         {lesson.steps && (
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-white mb-3 flex items-center">
@@ -68,6 +116,12 @@ export const LessonPanel = ({ lesson, lessonCompleted, showHint, onToggleHint }:
           <div className="mt-4 p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
             <h4 className="text-yellow-200 font-semibold mb-2">💡 Hint:</h4>
             <p className="text-yellow-200">{lesson.hint}</p>
+            {lesson.syntaxReminder && (
+              <div className="mt-3 pt-3 border-t border-yellow-500/30">
+                <h5 className="text-yellow-300 font-semibold mb-1">Quick Reminder:</h5>
+                <p className="text-yellow-200 text-sm">{lesson.syntaxReminder}</p>
+              </div>
+            )}
           </div>
         )}
 
