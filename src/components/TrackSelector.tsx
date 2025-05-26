@@ -2,9 +2,15 @@
 import React from 'react';
 import { Code, Shield, Globe, Cpu, BookOpen } from 'lucide-react';
 import { tracks } from '../data/tracks';
+import { UserProgress } from '../types/progress';
 
-export const TrackSelector = ({ onTrackSelect, userProgress }) => {
-  const getTrackIcon = (trackType) => {
+interface TrackSelectorProps {
+  onTrackSelect: (track: any) => void;
+  userProgress: UserProgress;
+}
+
+export const TrackSelector = ({ onTrackSelect, userProgress }: TrackSelectorProps) => {
+  const getTrackIcon = (trackType: string) => {
     const icons = {
       python: Code,
       javascript: Globe,
@@ -12,10 +18,10 @@ export const TrackSelector = ({ onTrackSelect, userProgress }) => {
       algorithms: Cpu,
       webdev: Globe
     };
-    return icons[trackType] || BookOpen;
+    return icons[trackType as keyof typeof icons] || BookOpen;
   };
 
-  const getTrackProgress = (trackId) => {
+  const getTrackProgress = (trackId: string): number => {
     const progress = userProgress[trackId];
     if (!progress) return 0;
     

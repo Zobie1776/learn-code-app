@@ -1,12 +1,17 @@
 
 import React from 'react';
 import { Trophy, Zap, Target } from 'lucide-react';
+import { UserProgress, ProgressStats } from '../types/progress';
 
-export const ProgressTracker = ({ userProgress }) => {
-  const calculateStats = () => {
+interface ProgressTrackerProps {
+  userProgress: UserProgress;
+}
+
+export const ProgressTracker = ({ userProgress }: ProgressTrackerProps) => {
+  const calculateStats = (): ProgressStats => {
     const tracks = Object.keys(userProgress);
-    const totalXP = Object.values(userProgress).reduce((sum, track) => sum + (track.xp || 0), 0);
-    const totalCompleted = Object.values(userProgress).reduce((sum, track) => sum + (track.completedLessons?.length || 0), 0);
+    const totalXP = Object.values(userProgress).reduce((sum, track) => sum + (track?.xp || 0), 0);
+    const totalCompleted = Object.values(userProgress).reduce((sum, track) => sum + (track?.completedLessons?.length || 0), 0);
     
     return {
       totalTracks: tracks.length,

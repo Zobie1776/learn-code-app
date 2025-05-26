@@ -1,9 +1,16 @@
 
 import React from 'react';
 import { ArrowLeft, Code, Award } from 'lucide-react';
+import { UserProgress } from '../types/progress';
 
-export const Header = ({ isLearningMode, onBackToDashboard, userProgress }) => {
-  const totalXP = Object.values(userProgress).reduce((sum, track) => sum + (track.xp || 0), 0);
+interface HeaderProps {
+  isLearningMode: boolean;
+  onBackToDashboard: () => void;
+  userProgress: UserProgress;
+}
+
+export const Header = ({ isLearningMode, onBackToDashboard, userProgress }: HeaderProps) => {
+  const totalXP = Object.values(userProgress).reduce((sum, track) => sum + (track?.xp || 0), 0);
   
   return (
     <header className="bg-black/20 backdrop-blur-sm border-b border-white/10">
