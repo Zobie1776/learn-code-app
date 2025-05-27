@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Play, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { LessonPanel } from './LessonPanel';
@@ -13,12 +14,15 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
   const isLastLesson = currentLesson === track.lessons.length - 1;
   const isFirstLesson = currentLesson === 0;
 
+  // Reset all states when switching tracks or lessons
   useEffect(() => {
+    console.log('Resetting code editor for track:', track.id, 'lesson:', currentLesson);
     setCode(lesson.startCode || '');
     setOutput('');
     setShowHint(false);
+    setIsRunning(false);
     setLessonCompleted(userProgress.completedLessons?.includes(currentLesson) || false);
-  }, [currentLesson, lesson, userProgress]);
+  }, [track.id, currentLesson, lesson.startCode, userProgress.completedLessons]);
 
   const runCode = async () => {
     setIsRunning(true);
@@ -65,6 +69,7 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
   };
 
   const resetCode = () => {
+    console.log('Manual reset - setting code to:', lesson.startCode);
     setCode(lesson.startCode || '');
     setOutput('');
   };
