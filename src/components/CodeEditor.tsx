@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Play, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { LessonPanel } from './LessonPanel';
@@ -17,6 +16,7 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
   // Reset all states when switching tracks or lessons
   useEffect(() => {
     console.log('Resetting code editor for track:', track.id, 'lesson:', currentLesson);
+    console.log('Setting code to:', lesson.startCode);
     setCode(lesson.startCode || '');
     setOutput('');
     setShowHint(false);
@@ -25,43 +25,86 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
   }, [track.id, currentLesson, lesson.startCode, userProgress.completedLessons]);
 
   const runCode = async () => {
+    console.log('Running code:', code);
     setIsRunning(true);
     setOutput('Running...');
     
     try {
-      // Simulate code execution - in a real app, this would call a backend API
+      // Simulate code execution delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      let executionResult = '';
+      
       if (track.type === 'python') {
-        // Simple Python simulation
+        // Enhanced Python simulation
         if (code.includes('print(')) {
-          const printMatch = code.match(/print\(['"`]([^'"`]*)['"`]\)/);
-          if (printMatch) {
-            setOutput(printMatch[1]);
+          // Handle f-string patterns
+          const fStringMatch = code.match(/print\(f["'`]([^"'`]*)\{([^}]+)\}([^"'`]*)["'`]\)/);
+          if (fStringMatch) {
+            console.log('Found f-string pattern:', fStringMatch);
+            const beforeVar = fStringMatch[1];
+            const varName = fStringMatch[2];
+            const afterVar = fStringMatch[3];
+            
+            // Extract variable values from code
+            const varMatch = code.match(new RegExp(`${varName}\\s*=\\s*["']([^"']+)["']`));
+            const varValue = varMatch ? varMatch[1] : varName;
+            
+            executionResult = `${beforeVar}${varValue}${afterVar}`;
           } else {
-            setOutput('Hello, World!');
+            // Handle regular print statements
+            const printMatches = code.match(/print\(['"`]([^'"`]*)['"`]\)/g);
+            if (printMatches) {
+              executionResult = printMatches.map(match => {
+                const content = match.match(/print\(['"`]([^'"`]*)['"`]\)/);
+                return content ? content[1] : '';
+              }).join('\n');
+            } else {
+              // Handle variable prints
+              const varPrintMatch = code.match(/print\(([^)]+)\)/);
+              if (varPrintMatch) {
+                const varName = varPrintMatch[1].trim();
+                const varMatch = code.match(new RegExp(`${varName}\\s*=\\s*["']([^"']+)["']`));
+                executionResult = varMatch ? varMatch[1] : varName;
+              }
+            }
           }
         } else {
-          setOutput('No output (try using print())');
+          executionResult = 'No output (try using print())';
         }
       } else if (track.type === 'javascript') {
-        // Simple JavaScript simulation
+        // Enhanced JavaScript simulation
         try {
-          const result = eval(code.replace(/console\.log/g, 'return'));
-          setOutput(String(result));
+          // Create a safe execution context
+          const consoleOutput = [];
+          const mockConsole = { log: (...args) => consoleOutput.push(args.join(' ')) };
+          
+          // Replace console.log calls and execute
+          const executableCode = code.replace(/console\.log/g, 'mockConsole.log');
+          const func = new Function('mockConsole', executableCode);
+          func(mockConsole);
+          
+          executionResult = consoleOutput.join('\n') || 'No output';
         } catch (e) {
-          setOutput(`Error: ${e.message}`);
+          executionResult = `Error: ${e.message}`;
         }
       }
       
-      // Check if lesson is completed (basic goal matching)
-      if (code.trim().includes(lesson.goal) || output.includes(lesson.expectedOutput)) {
-        if (!lessonCompleted) {
-          setLessonCompleted(true);
-          onLessonComplete(currentLesson);
-        }
+      console.log('Execution result:', executionResult);
+      setOutput(executionResult);
+      
+      // Check if lesson is completed based on output or code content
+      const isCompleted = lesson.expectedOutput ? 
+        executionResult.includes(lesson.expectedOutput) : 
+        code.trim().includes(lesson.goal);
+        
+      if (isCompleted && !lessonCompleted) {
+        console.log('Lesson completed!');
+        setLessonCompleted(true);
+        onLessonComplete(currentLesson);
       }
     } catch (error) {
+      console.error('Code execution error:', error);
       setOutput(`Error: ${error.message}`);
     } finally {
       setIsRunning(false);
