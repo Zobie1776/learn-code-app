@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Play, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { LessonPanel } from './LessonPanel';
@@ -24,6 +25,33 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
     setLessonCompleted(userProgress.completedLessons?.includes(currentLesson) || false);
   }, [track.id, currentLesson, lesson.startCode, userProgress.completedLessons]);
 
+  const extractVariables = (code) => {
+    const variables = {};
+    // Match variable assignments: name = "value" or age = 25
+    const varMatches = code.matchAll(/(\w+)\s*=\s*(?:["']([^"']+)["']|(\d+))/g);
+    for (const match of varMatches) {
+      const varName = match[1];
+      const stringValue = match[2];
+      const numValue = match[3];
+      variables[varName] = stringValue || numValue;
+    }
+    console.log('Extracted variables:', variables);
+    return variables;
+  };
+
+  const evaluateFString = (fStringContent, variables) => {
+    console.log('Evaluating f-string:', fStringContent);
+    console.log('Available variables:', variables);
+    
+    // Replace {variable} with actual values
+    return fStringContent.replace(/\{(\w+)\}/g, (match, varName) => {
+      if (variables.hasOwnProperty(varName)) {
+        return variables[varName];
+      }
+      return match; // Keep original if variable not found
+    });
+  };
+
   const runCode = async () => {
     console.log('Running code:', code);
     setIsRunning(true);
@@ -37,38 +65,41 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
       
       if (track.type === 'python') {
         // Enhanced Python simulation
+        const variables = extractVariables(code);
+        
         if (code.includes('print(')) {
-          // Handle f-string patterns
-          const fStringMatch = code.match(/print\(f["'`]([^"'`]*)\{([^}]+)\}([^"'`]*)["'`]\)/);
-          if (fStringMatch) {
-            console.log('Found f-string pattern:', fStringMatch);
-            const beforeVar = fStringMatch[1];
-            const varName = fStringMatch[2];
-            const afterVar = fStringMatch[3];
+          const printStatements = [];
+          
+          // Find all print statements
+          const printMatches = code.matchAll(/print\(([^)]+)\)/g);
+          
+          for (const match of printMatches) {
+            const printContent = match[1].trim();
+            console.log('Processing print statement:', printContent);
             
-            // Extract variable values from code
-            const varMatch = code.match(new RegExp(`${varName}\\s*=\\s*["']([^"']+)["']`));
-            const varValue = varMatch ? varMatch[1] : varName;
-            
-            executionResult = `${beforeVar}${varValue}${afterVar}`;
-          } else {
-            // Handle regular print statements
-            const printMatches = code.match(/print\(['"`]([^'"`]*)['"`]\)/g);
-            if (printMatches) {
-              executionResult = printMatches.map(match => {
-                const content = match.match(/print\(['"`]([^'"`]*)['"`]\)/);
-                return content ? content[1] : '';
-              }).join('\n');
-            } else {
-              // Handle variable prints
-              const varPrintMatch = code.match(/print\(([^)]+)\)/);
-              if (varPrintMatch) {
-                const varName = varPrintMatch[1].trim();
-                const varMatch = code.match(new RegExp(`${varName}\\s*=\\s*["']([^"']+)["']`));
-                executionResult = varMatch ? varMatch[1] : varName;
-              }
+            // Handle f-strings
+            const fStringMatch = printContent.match(/f["'`]([^"'`]*)["'`]/);
+            if (fStringMatch) {
+              const fStringContent = fStringMatch[1];
+              const evaluatedString = evaluateFString(fStringContent, variables);
+              printStatements.push(evaluatedString);
+            }
+            // Handle regular string literals
+            else if (printContent.match(/["'`]([^"'`]*)["'`]/)) {
+              const stringMatch = printContent.match(/["'`]([^"'`]*)["'`]/);
+              printStatements.push(stringMatch[1]);
+            }
+            // Handle variable references
+            else if (variables.hasOwnProperty(printContent)) {
+              printStatements.push(variables[printContent]);
+            }
+            // Handle expressions or unknown content
+            else {
+              printStatements.push(printContent);
             }
           }
+          
+          executionResult = printStatements.join('\n');
         } else {
           executionResult = 'No output (try using print())';
         }
