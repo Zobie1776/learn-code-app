@@ -1,8 +1,9 @@
 import React from 'react';
 import { CheckCircle, Target, List, Lightbulb, Code2, Zap } from 'lucide-react';
+import { Lesson } from '../types/lesson';
 
 interface LessonPanelProps {
-  lesson: any;
+  lesson: Lesson;
   lessonCompleted: boolean;
   showHint: boolean;
   onToggleHint: () => void;
