@@ -3,9 +3,10 @@ import React from 'react';
 import { Code, Shield, Globe, Cpu, BookOpen } from 'lucide-react';
 import { tracks } from '../data/tracks';
 import { UserProgress } from '../types/progress';
+import { Track } from '../types/lesson';
 
 interface TrackSelectorProps {
-  onTrackSelect: (track: any) => void;
+  onTrackSelect: (track: Track) => void;
   userProgress: UserProgress;
 }
 

@@ -60,6 +60,17 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Backend server
+
+This repository includes a minimal Express server for serving track data.
+Run it with:
+
+```sh
+npm run server
+```
+
+The API will be available at `http://localhost:3001` with endpoints like `/api/tracks`.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/1b5d2fbe-6257-4fc7-a479-75d30fd78ec0) and click on Share -> Publish.

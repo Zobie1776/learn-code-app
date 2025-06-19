@@ -45,7 +45,7 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
     
     // Replace {variable} with actual values
     return fStringContent.replace(/\{(\w+)\}/g, (match, varName) => {
-      if (variables.hasOwnProperty(varName)) {
+      if (Object.prototype.hasOwnProperty.call(variables, varName)) {
         return variables[varName];
       }
       return match; // Keep original if variable not found
@@ -90,7 +90,7 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
               printStatements.push(stringMatch[1]);
             }
             // Handle variable references
-            else if (variables.hasOwnProperty(printContent)) {
+            else if (Object.prototype.hasOwnProperty.call(variables, printContent)) {
               printStatements.push(variables[printContent]);
             }
             // Handle expressions or unknown content
