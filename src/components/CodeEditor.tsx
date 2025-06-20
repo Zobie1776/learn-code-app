@@ -6,6 +6,7 @@ import { LessonPanel } from './LessonPanel';
 export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonChange, userProgress }) => {
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
+  const [error, setError] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [lessonCompleted, setLessonCompleted] = useState(false);
@@ -25,110 +26,39 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
     setLessonCompleted(userProgress.completedLessons?.includes(currentLesson) || false);
   }, [track.id, currentLesson, lesson.startCode, userProgress.completedLessons]);
 
-  const extractVariables = (code) => {
-    const variables = {};
-    // Match variable assignments: name = "value" or age = 25
-    const varMatches = code.matchAll(/(\w+)\s*=\s*(?:["']([^"']+)["']|(\d+))/g);
-    for (const match of varMatches) {
-      const varName = match[1];
-      const stringValue = match[2];
-      const numValue = match[3];
-      variables[varName] = stringValue || numValue;
-    }
-    console.log('Extracted variables:', variables);
-    return variables;
-  };
 
-  const evaluateFString = (fStringContent, variables) => {
-    console.log('Evaluating f-string:', fStringContent);
-    console.log('Available variables:', variables);
-    
-    // Replace {variable} with actual values
-    return fStringContent.replace(/\{(\w+)\}/g, (match, varName) => {
-      if (Object.prototype.hasOwnProperty.call(variables, varName)) {
-        return variables[varName];
-      }
-      return match; // Keep original if variable not found
-    });
-  };
 
   const runCode = async () => {
-    console.log('Running code:', code);
+    console.log('Running code via backend:', code);
     setIsRunning(true);
     setOutput('Running...');
-    
+    setError('');
+
     try {
-      // Simulate code execution delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      let executionResult = '';
-      
-      if (track.type === 'python') {
-        // Enhanced Python simulation
-        const variables = extractVariables(code);
-        
-        if (code.includes('print(')) {
-          const printStatements = [];
-          
-          // Find all print statements
-          const printMatches = code.matchAll(/print\(([^)]+)\)/g);
-          
-          for (const match of printMatches) {
-            const printContent = match[1].trim();
-            console.log('Processing print statement:', printContent);
-            
-            // Handle f-strings
-            const fStringMatch = printContent.match(/f["'`]([^"'`]*)["'`]/);
-            if (fStringMatch) {
-              const fStringContent = fStringMatch[1];
-              const evaluatedString = evaluateFString(fStringContent, variables);
-              printStatements.push(evaluatedString);
-            }
-            // Handle regular string literals
-            else if (printContent.match(/["'`]([^"'`]*)["'`]/)) {
-              const stringMatch = printContent.match(/["'`]([^"'`]*)["'`]/);
-              printStatements.push(stringMatch[1]);
-            }
-            // Handle variable references
-            else if (Object.prototype.hasOwnProperty.call(variables, printContent)) {
-              printStatements.push(variables[printContent]);
-            }
-            // Handle expressions or unknown content
-            else {
-              printStatements.push(printContent);
-            }
-          }
-          
-          executionResult = printStatements.join('\n');
-        } else {
-          executionResult = 'No output (try using print())';
-        }
-      } else if (track.type === 'javascript') {
-        // Enhanced JavaScript simulation
-        try {
-          // Create a safe execution context
-          const consoleOutput = [];
-          const mockConsole = { log: (...args) => consoleOutput.push(args.join(' ')) };
-          
-          // Replace console.log calls and execute
-          const executableCode = code.replace(/console\.log/g, 'mockConsole.log');
-          const func = new Function('mockConsole', executableCode);
-          func(mockConsole);
-          
-          executionResult = consoleOutput.join('\n') || 'No output';
-        } catch (e) {
-          executionResult = `Error: ${e.message}`;
-        }
+      const response = await fetch('http://localhost:5000/run-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ language: track.type, code })
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || 'Server error');
       }
-      
-      console.log('Execution result:', executionResult);
+
+      const data = await response.json();
+      console.log('Backend response:', data);
+
+      const executionResult = data.output || '';
       setOutput(executionResult);
-      
-      // Check if lesson is completed based on output or code content
-      const isCompleted = lesson.expectedOutput ? 
-        executionResult.includes(lesson.expectedOutput) : 
+      if (data.error) {
+        setError(data.error);
+      }
+
+      const isCompleted = lesson.expectedOutput ?
+        executionResult.includes(lesson.expectedOutput) :
         code.trim().includes(lesson.goal);
-        
+
       if (isCompleted && !lessonCompleted) {
         console.log('Lesson completed!');
         setLessonCompleted(true);
@@ -136,7 +66,8 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
       }
     } catch (error) {
       console.error('Code execution error:', error);
-      setOutput(`Error: ${error.message}`);
+      setError(error.message || 'Network error');
+      setOutput('');
     } finally {
       setIsRunning(false);
     }
@@ -249,8 +180,10 @@ export const CodeEditor = ({ track, currentLesson, onLessonComplete, onLessonCha
             <span className="text-slate-300 font-medium">Output</span>
           </div>
           
-          <div className="flex-1 bg-black text-green-400 font-mono p-4 overflow-auto">
-            <pre className="whitespace-pre-wrap">{output || 'Run your code to see output here...'}</pre>
+          <div className="flex-1 bg-black font-mono p-4 overflow-auto">
+            <pre className={error ? 'whitespace-pre-wrap text-red-400' : 'whitespace-pre-wrap text-green-400'}>
+              {error || output || 'Run your code to see output here...'}
+            </pre>
           </div>
         </div>
       </div>
